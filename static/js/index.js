@@ -314,9 +314,10 @@ $(document).ready(function() {
 	
     bulmaSlider.attach();
 
-    // 初始化主点云
-    setTimeout(function() {
-      initMainPointCloud();
-      initThumbnailClickHandlers();
-    }, 500); // 延迟加载，确保DOM已完全渲染
+    if (document.getElementById('pointcloud-container-main')) {
+      setTimeout(function() {
+        initMainPointCloud();
+        initThumbnailClickHandlers();
+      }, 500);
+    }
 })

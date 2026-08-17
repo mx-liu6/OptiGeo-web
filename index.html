@@ -8,7 +8,7 @@
   <meta property="og:title" content="OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes"/>
   <meta property="og:description" content="OptiGeo is an efficient monocular geometry framework for embodied perception in optically challenging scenes."/>
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/images/Teaser.png" />
+  <meta property="og:image" content="static/images/teaser.png" />
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
 
@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="OptiGeo">
   <meta name="twitter:description" content="OptiGeo is an efficient monocular geometry framework for embodied perception in optically challenging scenes.">
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/Teaser.png">
+  <meta name="twitter:image" content="static/images/teaser.png">
   <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
   <meta name="keywords" content="OptiGeo, monocular geometry, embodied perception, optically challenging scenes, metric depth, 3D vision">
@@ -51,9 +51,11 @@
   <nav class="toc" aria-label="Contents">
     <strong>Contents</strong>
     <a href="#abstract">Abstract</a>
-    <a href="#overview">Overview</a>
-    <a href="#pointclouds">Point Clouds</a>
+    <a href="#motivation">Motivation</a>
+    <a href="#method">Method</a>
+    <a href="#data">Data</a>
     <a href="#results">Results</a>
+    <a href="#real-world">Real World</a>
     <a href="#BibTeX">Citation</a>
   </nav>
 
@@ -154,7 +156,7 @@
             
             <!-- Teaser Video -->
             <div class="teaser-video">
-              <video autoplay controls muted loop playsinline preload="metadata" poster="static/images/Teaser.png" aria-label="OptiGeo teaser video">
+              <video autoplay controls muted loop playsinline preload="metadata" poster="static/images/teaser.png" aria-label="OptiGeo teaser video">
                 <source src="static/video/Optigeo.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
@@ -193,7 +195,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-          We present OptiGeo, an efficient monocular geometry framework for embodied perception in optically challenging scenes. OptiGeo targets reliable single-image 3D understanding under visual conditions that commonly degrade embodied systems, including difficult illumination, reflections, glare, blur, and other optical disturbances. By emphasizing efficient geometry estimation and robustness in challenging optical environments, OptiGeo supports embodied agents that must perceive, navigate, and interact in real-world scenes where visual signals are imperfect. Extensive experiments demonstrate that OptiGeo delivers accurate and stable monocular geometry while maintaining practical efficiency for embodied perception.
+          We present OptiGeo, an efficient monocular geometry framework for embodied perception in optically challenging scenes. Transparent, reflective, and specular regions often corrupt real sensor depth through missing measurements, distorted surfaces, or background leakage, causing general monocular geometry models to inherit biased supervision. OptiGeo treats these optical failures as localized training-label bias rather than a separate transparent-object depth task. It rehabilitates real supervision with a clean-geometry teacher and residual-trimmed alignment, then injects compact transparency-targeted rendering as clean optical geometry supervision. The final deployed model is a compact 30M feed-forward student that improves transparent-region geometry while preserving broad zero-shot generalization and practical runtime for robotic perception.
           </p>
         </div>
       </div>
@@ -202,77 +204,93 @@
 </section>
 <!-- End paper abstract -->
 
-<!-- Overview -->
-<section class="section hero" id="overview">
+<!-- Motivation -->
+<section class="section hero" id="motivation">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
-        <h2 class="title is-3">Overview</h2>
-        <img src="static/images/Structure.png" alt="Structure of OptiGeo" style="width: 100%; max-width: 1200px;"/>
+        <h2 class="title is-3">Why Optical Scenes Fail</h2>
+        <figure class="paper-figure">
+          <img src="static/images/empirical.png" alt="Empirical analysis of optical-region supervision bias">
+        </figure>
         <div class="content has-text-justified">
           <p>
-            <b>OptiGeo architecture.</b> OptiGeo estimates monocular geometry efficiently for embodied perception, with a design focused on robust 3D understanding in optically challenging scenes. The framework produces geometry predictions that can support downstream embodied tasks such as scene understanding, navigation, and interaction under degraded visual conditions.
+            <b>Empirical finding.</b> Optical failures in transparent and reflective regions are usually localized, but their labels can be systematically wrong because real depth sensors leak background depth, miss glass objects, or distort specular surfaces. OptiGeo therefore focuses on correcting biased real supervision while keeping the broad scene-level generalization learned from large mixed-domain data.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End Overview -->
+<!-- End Motivation -->
 
-<!-- Point Cloud Visualization -->
-<section class="section" id="pointclouds">
+<!-- Method -->
+<section class="section is-light" id="method">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
-        <h2 class="title is-3">Point Cloud Visualization</h2>
-        
-        <!-- Main point cloud display -->
-        <div style="margin-top: 2rem; margin-bottom: 2rem;">
-          <div id="pointcloud-container-main" class="pointcloud-container" data-ply-path="static/pointclouds/indoor.ply" style="height: 500px; border-radius: 5px; background-color: #f0f0f0; position: relative; overflow: hidden; margin: 0 auto; max-width: 1200px;"></div>
+        <h2 class="title is-3">Bias-Aware Geometry Training</h2>
+        <figure class="paper-figure paper-figure-wide">
+          <img src="static/images/pipeline.png" alt="OptiGeo training pipeline">
+        </figure>
+        <div class="content has-text-justified">
+          <p>
+            <b>OptiGeo pipeline.</b> A clean-geometry teacher is trained only on synthetic supervision to avoid inheriting real sensor artifacts. For real images, residual-trimmed alignment calibrates the teacher to reliable sensor pixels and suppresses high-residual regions that often correspond to transparent or reflective failures. Corrected real labels and clean rendered samples then train a compact 30M student for efficient feed-forward inference.
+          </p>
         </div>
-        
-        <!-- Thumbnail selection -->
-        <div class="columns is-centered" style="margin-top: 1rem;">
-          <div class="column is-narrow">
-            <div class="pointcloud-thumbnails" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-              <div class="thumbnail-item" data-ply="static/pointclouds/indoor.ply" data-name="Indoor" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
-                <img src="static/images/indoor.jpg" alt="Indoor" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
-                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Indoor</strong></p>
-              </div>
-              <div class="thumbnail-item" data-ply="static/pointclouds/robotic.ply" data-name="Robotic" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
-                <img src="static/images/robotic.jpg" alt="Robotic" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
-                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Robotic</strong></p>
-              </div>
-              <div class="thumbnail-item" data-ply="static/pointclouds/object.ply" data-name="Object" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
-                <img src="static/images/object.jpg" alt="Object" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
-                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Object</strong></p>
-              </div>
-              <div class="thumbnail-item" data-ply="static/pointclouds/driving.ply" data-name="Driving" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
-                <img src="static/images/driving.png" alt="Driving" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
-                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Driving</strong></p>
-              </div>
-            </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Method -->
+
+<!-- Targeted Data -->
+<section class="section hero" id="data">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Targeted Optical Geometry</h2>
+        <figure class="paper-figure paper-figure-wide">
+          <img src="static/images/target_rendering.png" alt="Transparency-targeted rendering data">
+        </figure>
+        <div class="content has-text-justified">
+          <p>
+            <b>Compact rendering, not narrow fine-tuning.</b> OptiGeo augments broad real and synthetic training data with a small transparency-targeted rendering set. Object-centric scenes provide clean supervision for glassware, refractive boundaries, and local occlusion structures, while general indoor scenes preserve wider scene-level geometry and prevent over-specialization.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Targeted Data -->
+
+
+<!-- Main Results -->
+<section class="section is-light" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Results and Ablations</h2>
+        <div class="result-stats" aria-label="OptiGeo headline results">
+          <div class="stat-item">
+            <span class="stat-value">30M</span>
+            <span class="stat-label">parameters</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">30.52</span>
+            <span class="stat-label">FPS</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">0.42GB</span>
+            <span class="stat-label">peak memory</span>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End Point Cloud Visualization -->
-
-
-
-<!-- Main Results -->
-<section class="section hero" id="results">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full">
-        <h2 class="title is-3">Main Results</h2>
-        <img src="static/images/Performance.png" alt="Results" style="max-width: 1800px; width: 100%; height: auto;"/>
+        <figure class="paper-figure">
+          <img src="static/images/ablation_data.png" alt="OptiGeo ablation and quantitative results">
+        </figure>
         <div class="content has-text-justified">
           <p>
-            Quantitative results for metric and relative depth estimation. <i>AbsRel</i> and δ<sub>1</sub> are in percentage. The best values are highlighted in <b>bold</b>, and the second-best ones are <u>underlined</u>. * means model needs GT intrinsic as input. <span style="color: #808080;">Gray numbers</span> denote models trained on respective benchmarks or need GT intrinsics, thus excluded from ranking.
+            <b>Robustness with efficiency.</b> The ablations show that residual-trimmed real-label rehabilitation improves transparent-scene geometry and boundary quality, while targeted rendering supplies clean local optical supervision. At inference time OptiGeo deploys only the compact student, improving optical robustness without test-time refinement, multi-view fusion, or auxiliary transparent-object modules.
           </p>
         </div>
       </div>
@@ -280,6 +298,31 @@
   </div>
 </section>
 <!-- Main Results -->
+
+<!-- Real-world Cases -->
+<section class="section hero" id="real-world">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Real-World Embodied Scenes</h2>
+        <div class="real-world-grid">
+          <figure class="paper-figure">
+            <img src="static/images/real1.png" alt="OptiGeo real-world optical scene result">
+          </figure>
+          <figure class="paper-figure">
+            <img src="static/images/real2.png" alt="OptiGeo real-world navigation scene result">
+          </figure>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            <b>Downstream perception.</b> In real transparent and reflective scenes, OptiGeo recovers more coherent object and surrounding geometry, supporting embodied agents that must reason about glass doors, mirrors, transparent containers, and other visually deceptive obstacles.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Real-world Cases -->
 
 
 <!-- DiST-T video -->
@@ -327,7 +370,7 @@
     <h2 class="title">BibTeX</h2>
     <pre><code>@misc{liu2026optigeo,
       title={OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes}, 
-      author={Muxin Liu and Xiaoyang Lyu and Tianhe Ren and Peng Dai and Xiaoshan Wu and Zhiyue Zhang and Jiaqi Zhang and Jiehong Lin and Shaoshuai Shi and Xiaojuan Qi},
+      author={Muxin Liu and Tianbo Liu and Jing Xia and Xiaoyang Lyu and Xiaoshan Wu and Bo Wang and Peng Dai and Zhongrui Wang and Shaoshuai Shi and Xiaojuan Qi},
       year={2026},
       note={Project page}, 
 }</code></pre>
