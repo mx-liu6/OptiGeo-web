@@ -515,39 +515,6 @@ body::before {
   font-size: smaller;
 }
 
-/* Point Cloud Thumbnail Style */
-.thumbnail-item {
-  opacity: 0.7;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.thumbnail-item:hover {
-  transform: scale(1.08) translateY(-4px);
-  opacity: 1;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.thumbnail-item img {
-  pointer-events: none;
-  transition: transform 0.3s ease;
-}
-
-.thumbnail-item:hover img {
-  transform: scale(1.05);
-}
-
-/* Point Cloud Container Style */
-.pointcloud-container {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.pointcloud-container:hover {
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
 /* BibTeX Area */
 #BibTeX {
   background: #ffffff;

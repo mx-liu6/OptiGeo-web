@@ -41,9 +41,6 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script src="static/js/index.js"></script>
 </head>
 <body>
@@ -136,7 +133,7 @@
                 <span class="link-block">
                   <a class="external-link button is-normal is-rounded is-disabled-link" aria-disabled="true">
                     <span class="icon">
-                      <img src="static/images/huggingface_logo-noborder.svg" alt="" aria-hidden="true">
+                      <i class="fas fa-cube"></i>
                     </span>
                     <span>Model Soon</span>
                   </a>
@@ -156,7 +153,7 @@
             
             <!-- Teaser Video -->
             <div class="teaser-video">
-              <video autoplay controls muted loop playsinline preload="metadata" poster="static/images/teaser.png" aria-label="OptiGeo teaser video">
+              <video autoplay controls muted loop playsinline preload="auto" aria-label="OptiGeo teaser video">
                 <source src="static/video/Optigeo.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
@@ -166,25 +163,6 @@
       </div>
     </div>
 </section>
-
-
-<!-- Teaser video-->
-<!--
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <source src="static/videos/banner_video.mp4"
-        type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
-      </h2>
-    </div>
-  </div>
-</section>
--->
-
 
 
 <!-- Paper abstract -->
@@ -225,7 +203,7 @@
 <!-- End Motivation -->
 
 <!-- Method -->
-<section class="section is-light" id="method">
+<section class="section hero is-light" id="method">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -266,7 +244,7 @@
 
 
 <!-- Main Results -->
-<section class="section is-light" id="results">
+<section class="section hero is-light" id="results">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -323,29 +301,6 @@
   </div>
 </section>
 <!-- End Real-world Cases -->
-
-
-<!-- DiST-T video -->
-
-
-<!-- <section class="section hero">
-  <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">DiST-T: Zero-shot on Waymo</h2>
-        <video poster="" id="video1" autoplay controls muted loop height="100%">
-          <source src="static/videos/DiST_T_zs_waymo.mp4"
-          type="video/mp4">
-        </video>
-        <div class="content has-text-justified">
-          <p> The number of cameras and their installation positions in the Waymo dataset, as well as the image resolutions, are quite different from those in nuScenes.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
 
 
 <!-- Paper poster -->
