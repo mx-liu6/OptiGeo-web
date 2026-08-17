@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="OptiGeo is an efficient monocular geometry framework for embodied perception in optically challenging scenes.">
+  <meta property="og:title" content="OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes"/>
+  <meta property="og:description" content="OptiGeo is an efficient monocular geometry framework for embodied perception in optically challenging scenes."/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/images/Teaser.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="OptiGeo">
+  <meta name="twitter:description" content="OptiGeo is an efficient monocular geometry framework for embodied perception in optically challenging scenes.">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/Teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="OptiGeo, monocular geometry, embodied perception, optically challenging scenes, metric depth, 3D vision">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes</title>
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+<body>
+
+  <nav class="toc" aria-label="Contents">
+    <strong>Contents</strong>
+    <a href="#abstract">Abstract</a>
+    <a href="#overview">Overview</a>
+    <a href="#pointclouds">Point Clouds</a>
+    <a href="#results">Results</a>
+    <a href="#BibTeX">Citation</a>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <span class="venue-badge">Monocular Geometry Estimation</span>
+            <h1 class="title is-1 publication-title">OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes</h1>
+            <p class="publication-tagline">An efficient monocular geometry framework for robust embodied perception under optically challenging visual conditions.</p>
+            <!-- <h1 class="title is-2 publication-title">[TPAMI]</h1> -->
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                Muxin Liu<sup>1,2</sup><sup>,*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://shawlyu.github.io" target="_blank">Xiaoyang Lyu<sup>1</sup></a><sup>,*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://rentainhe.github.io" target="_blank">Tianhe Ren<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://daipengwa.github.io" target="_blank">Peng Dai<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=9nsSKpsAAAAJ&hl=en" target="_blank">Xiaoshan Wu<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                Zhiyue Zhang<sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=V1zSNIYAAAAJ&hl=en" target="_blank">Jiaqi Zhang<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://jiehonglin.github.io" target="_blank">Jiehong Lin<sup>1</sup></a>
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="https://shishaoshuai.com" target="_blank">Shaoshuai Shi<sup>2</sup></a><sup>,✉</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://xjqi.github.io" target="_blank">Xiaojuan Qi<sup>1</sup></a><sup>,✉</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors publication-affiliations">
+              <span class="author-block"><sup>1</sup>The University of Hong Kong</span>
+              <span class="author-block"><sup>2</sup>Voyager Research, Didi Chuxing</span>
+              <!-- <br>Conferance name and year</span> -->
+              <span class="eql-cntrb"><small><br><sup>*</sup>Equal Contribution <sup>†</sup> Corresponding Author </small></span>
+            </div>
+                  
+            <!-- Arxiv PDF link -->
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded paper-link is-disabled-link" aria-disabled="true">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper Soon</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-disabled-link" aria-disabled="true">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code Soon</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-disabled-link" aria-disabled="true">
+                    <span class="icon">
+                      <img src="static/images/huggingface_logo-noborder.svg" alt="" aria-hidden="true">
+                    </span>
+                    <span>Model Soon</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="#BibTeX"
+                  class="external-link button is-normal is-rounded">
+                    <span class="icon">
+                      <i class="fas fa-quote-right"></i>
+                    </span>
+                    <span>Bib</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+            
+            <!-- Teaser Image -->
+            <div style="margin-top: 1.5rem;">
+              <img src="static/images/Teaser.png" alt="OptiGeo Teaser" style="width: 100%; max-width: 1000px; margin: 0 auto;"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+
+<!-- Teaser video-->
+<!--
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video poster="" id="tree" autoplay controls muted loop height="100%">
+        <source src="static/videos/banner_video.mp4"
+        type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+      </h2>
+    </div>
+  </div>
+</section>
+-->
+
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+          We present OptiGeo, an efficient monocular geometry framework for embodied perception in optically challenging scenes. OptiGeo targets reliable single-image 3D understanding under visual conditions that commonly degrade embodied systems, including difficult illumination, reflections, glare, blur, and other optical disturbances. By emphasizing efficient geometry estimation and robustness in challenging optical environments, OptiGeo supports embodied agents that must perceive, navigate, and interact in real-world scenes where visual signals are imperfect. Extensive experiments demonstrate that OptiGeo delivers accurate and stable monocular geometry while maintaining practical efficiency for embodied perception.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Overview -->
+<section class="section hero" id="overview">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Overview</h2>
+        <img src="static/images/Structure.png" alt="Structure of OptiGeo" style="width: 100%; max-width: 1200px;"/>
+        <div class="content has-text-justified">
+          <p>
+            <b>OptiGeo architecture.</b> OptiGeo estimates monocular geometry efficiently for embodied perception, with a design focused on robust 3D understanding in optically challenging scenes. The framework produces geometry predictions that can support downstream embodied tasks such as scene understanding, navigation, and interaction under degraded visual conditions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Overview -->
+
+<!-- Point Cloud Visualization -->
+<section class="section" id="pointclouds">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Point Cloud Visualization</h2>
+        
+        <!-- Main point cloud display -->
+        <div style="margin-top: 2rem; margin-bottom: 2rem;">
+          <div id="pointcloud-container-main" class="pointcloud-container" data-ply-path="static/pointclouds/indoor.ply" style="height: 500px; border-radius: 5px; background-color: #f0f0f0; position: relative; overflow: hidden; margin: 0 auto; max-width: 1200px;"></div>
+        </div>
+        
+        <!-- Thumbnail selection -->
+        <div class="columns is-centered" style="margin-top: 1rem;">
+          <div class="column is-narrow">
+            <div class="pointcloud-thumbnails" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+              <div class="thumbnail-item" data-ply="static/pointclouds/indoor.ply" data-name="Indoor" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
+                <img src="static/images/indoor.jpg" alt="Indoor" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
+                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Indoor</strong></p>
+              </div>
+              <div class="thumbnail-item" data-ply="static/pointclouds/robotic.ply" data-name="Robotic" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
+                <img src="static/images/robotic.jpg" alt="Robotic" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
+                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Robotic</strong></p>
+              </div>
+              <div class="thumbnail-item" data-ply="static/pointclouds/object.ply" data-name="Object" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
+                <img src="static/images/object.jpg" alt="Object" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
+                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Object</strong></p>
+              </div>
+              <div class="thumbnail-item" data-ply="static/pointclouds/driving.ply" data-name="Driving" style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; padding: 5px; transition: all 0.3s;">
+                <img src="static/images/driving.png" alt="Driving" style="width: 120px; height: 90px; object-fit: cover; border-radius: 3px; display: block;">
+                <p class="has-text-centered mt-1" style="font-size: 0.85rem; margin-top: 5px;"><strong>Driving</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Point Cloud Visualization -->
+
+
+
+<!-- Main Results -->
+<section class="section hero" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Main Results</h2>
+        <img src="static/images/Performance.png" alt="Results" style="max-width: 1800px; width: 100%; height: auto;"/>
+        <div class="content has-text-justified">
+          <p>
+            Quantitative results for metric and relative depth estimation. <i>AbsRel</i> and δ<sub>1</sub> are in percentage. The best values are highlighted in <b>bold</b>, and the second-best ones are <u>underlined</u>. * means model needs GT intrinsic as input. <span style="color: #808080;">Gray numbers</span> denote models trained on respective benchmarks or need GT intrinsics, thus excluded from ranking.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Main Results -->
+
+
+<!-- DiST-T video -->
+
+
+<!-- <section class="section hero">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">DiST-T: Zero-shot on Waymo</h2>
+        <video poster="" id="video1" autoplay controls muted loop height="100%">
+          <source src="static/videos/DiST_T_zs_waymo.mp4"
+          type="video/mp4">
+        </video>
+        <div class="content has-text-justified">
+          <p> The number of cameras and their installation positions in the Waymo dataset, as well as the image resolutions, are quite different from those in nuScenes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+
+<!-- Paper poster -->
+<!--
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title">Poster</h2>
+
+      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
+          </iframe>
+        
+      </div>
+    </div>
+  </section>
+-->
+
+
+<!--BibTex citation -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{liu2026optigeo,
+      title={OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes}, 
+      author={Muxin Liu and Xiaoyang Lyu and Tianhe Ren and Peng Dai and Xiaoshan Wu and Zhiyue Zhang and Jiaqi Zhang and Jiehong Lin and Shaoshuai Shi and Xiaojuan Qi},
+      year={2026},
+      note={Project page}, 
+}</code></pre>
+  </div>
+</section>
+<!--End BibTex citation -->
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <!-- Icons -->
+          <div style="margin-bottom: 1rem;">
+            <span class="is-disabled-link footer-icon-placeholder" aria-disabled="true" style="margin-right: 1rem; display: inline-block;">
+              <i class="fas fa-file-pdf" style="font-size: 2rem; color: #000;"></i>
+            </span>
+            <span class="is-disabled-link footer-icon-placeholder" aria-disabled="true" style="display: inline-block;">
+              <i class="fab fa-github" style="font-size: 2rem; color: #000;"></i>
+            </span>
+          </div>
+          
+          <!-- Text -->
+          <p style="color: #666; margin-bottom: 0.5rem;">
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" style="color: #3273dc;">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p style="color: #666; margin-top: 0.5rem;">
+            We thank <a href="https://nerfies.github.io" target="_blank" style="color: #3273dc;">Nerfies</a> for their project page template.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  </body>
+  </html>
