@@ -151,6 +151,20 @@ body::before {
   text-wrap: balance;
 }
 
+.teaser-video {
+  width: 100%;
+  max-width: 1000px;
+  margin: 1.5rem auto 0;
+}
+
+.teaser-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(24, 45, 55, 0.12);
+}
+
 /* Author Style */
 .publication-authors {
     font-family: 'Google Sans', sans-serif;
