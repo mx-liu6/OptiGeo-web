@@ -130,7 +130,6 @@ body::before {
 
 .publication-title {
     font-family: 'Google Sans', sans-serif;
-    font-size: clamp(1.9rem, 3.8vw, 2.55rem);
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #000000;
@@ -572,7 +571,7 @@ body::before {
 /* Responsive Design */
 @media (max-width: 768px) {
   .publication-title {
-    font-size: 1.72rem;
+    font-size: 2rem;
   }
   
   .title.is-3 {
