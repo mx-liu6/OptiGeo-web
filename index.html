@@ -48,9 +48,8 @@
   <nav class="toc" aria-label="Contents">
     <strong>Contents</strong>
     <a href="#abstract">Abstract</a>
-    <a href="#motivation">Motivation</a>
+    <a href="#empirical-study">Empirical Study</a>
     <a href="#method">Method</a>
-    <a href="#data">Data</a>
     <a href="#results">Results</a>
     <a href="#real-world">Real World</a>
     <a href="#BibTeX">Citation</a>
@@ -64,7 +63,7 @@
           <div class="column has-text-centered">
             <span class="venue-badge">Optical-Robust Geometry Estimation</span>
             <h1 class="title is-1 publication-title">OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes</h1>
-            <p class="publication-tagline">An efficient monocular geometry framework for robust embodied perception under optically challenging visual conditions.</p>
+            <p class="publication-tagline">Redefining transparent and reflective depth estimation with a lightweight, high-precision framework for edge deployment.</p>
             <!-- <h1 class="title is-2 publication-title">[TPAMI]</h1> -->
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
@@ -169,12 +168,15 @@
 <section class="section hero is-light" id="abstract">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
+      <div class="column is-full">
         <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-          We present OptiGeo, an efficient monocular geometry framework for embodied perception in optically challenging scenes. Transparent, reflective, and specular regions often corrupt real sensor depth through missing measurements, distorted surfaces, or background leakage, causing general monocular geometry models to inherit biased supervision. OptiGeo treats these optical failures as localized training-label bias rather than a separate transparent-object depth task. It rehabilitates real supervision with a clean-geometry teacher and residual-trimmed alignment, then injects compact transparency-targeted rendering as clean optical geometry supervision. The final deployed model is a compact 30M feed-forward student that improves transparent-region geometry while preserving broad zero-shot generalization and practical runtime for robotic perception.
-          </p>
+        <div class="abstract-card">
+          <img src="static/images/teaser.png" alt="OptiGeo teaser overview">
+          <div class="content has-text-justified">
+            <p>
+            We present OptiGeo, an efficient monocular geometry framework for embodied perception in optically challenging scenes. Transparent, reflective, and specular regions often corrupt real sensor depth through missing measurements, distorted surfaces, or background leakage, causing general monocular geometry models to inherit biased supervision. OptiGeo treats these optical failures as localized training-label bias rather than a separate transparent-object depth task. It rehabilitates real supervision with a clean-geometry teacher and residual-trimmed alignment, then injects compact transparency-targeted rendering as clean optical geometry supervision. The final deployed model is a compact 30M feed-forward student that improves transparent-region geometry while preserving broad zero-shot generalization and practical runtime for robotic perception.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -182,25 +184,74 @@
 </section>
 <!-- End paper abstract -->
 
-<!-- Motivation -->
-<section class="section hero" id="motivation">
+<!-- Empirical Study -->
+<section class="section hero" id="empirical-study">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
-        <h2 class="title is-3">Why Optical Scenes Fail</h2>
-        <figure class="paper-figure">
-          <img src="static/images/empirical.png" alt="Empirical analysis of optical-region supervision bias">
-        </figure>
-        <div class="content has-text-justified">
-          <p>
-            <b>Empirical finding.</b> Optical failures in transparent and reflective regions are usually localized, but their labels can be systematically wrong because real depth sensors leak background depth, miss glass objects, or distort specular surfaces. OptiGeo therefore focuses on correcting biased real supervision while keeping the broad scene-level generalization learned from large mixed-domain data.
-          </p>
+        <h2 class="title is-3">Empirical Study</h2>
+        <div class="empirical-grid">
+          <section class="empirical-card">
+            <span class="empirical-index">3.1</span>
+            <h3>How Optical Bias Enters Base-Model Training</h3>
+            <img class="empirical-card-image" src="static/images/empirical.png" alt="Empirical analysis of how optical bias enters base-model training">
+            <p>
+              Real RGB-D supervision can look valid while still being wrong in transparent and reflective regions. Background leakage, missing object depth, and distorted specular measurements are absorbed as training labels, causing general monocular geometry models to inherit sensor failure patterns.
+            </p>
+          </section>
+
+          <section class="empirical-card">
+            <span class="empirical-index">3.2</span>
+            <h3>Are Optical Challenges a Separate Depth Task?</h3>
+            <p>
+              The failure is localized rather than a whole-image breakdown. Full-image results on ClearGrasp Real show that strong base geometry can already recover scene-level structure, while the remaining difficulty concentrates around optical regions.
+            </p>
+            <table class="empirical-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Params</th>
+                  <th>AbsRel ↓</th>
+                  <th>δ<sub>1.05</sub> ↑</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>DAv3-Large</td>
+                  <td>350M</td>
+                  <td>2.94</td>
+                  <td>85.6</td>
+                </tr>
+                <tr>
+                  <td>VGGT</td>
+                  <td>1.2B</td>
+                  <td>1.98</td>
+                  <td>91.9</td>
+                </tr>
+                <tr>
+                  <td>OptiGeo-Teacher</td>
+                  <td>940M</td>
+                  <td><b>1.46</b></td>
+                  <td><b>94.6</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="empirical-card">
+            <span class="empirical-index">3.3</span>
+            <h3>What Role Should Transparency-Targeted Data Play?</h3>
+            <img class="empirical-card-image" src="static/images/target_rendering.png" alt="Transparency-targeted rendering data for clean optical geometry">
+            <p>
+              Transparency-targeted data should not act as a large domain-specific fine-tuning set. Instead, a compact rendering set supplies clean local optical geometry for glassware, refractive boundaries, and occlusion structures that real sensors cannot reliably annotate.
+            </p>
+          </section>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End Motivation -->
+<!-- End Empirical Study -->
 
 <!-- Method -->
 <section class="section hero is-light" id="method">
@@ -222,27 +273,6 @@
 </section>
 <!-- End Method -->
 
-<!-- Targeted Data -->
-<section class="section hero" id="data">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full">
-        <h2 class="title is-3">Targeted Optical Geometry</h2>
-        <figure class="paper-figure paper-figure-wide">
-          <img src="static/images/target_rendering.png" alt="Transparency-targeted rendering data">
-        </figure>
-        <div class="content has-text-justified">
-          <p>
-            <b>Compact rendering, not narrow fine-tuning.</b> OptiGeo augments broad real and synthetic training data with a small transparency-targeted rendering set. Object-centric scenes provide clean supervision for glassware, refractive boundaries, and local occlusion structures, while general indoor scenes preserve wider scene-level geometry and prevent over-specialization.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End Targeted Data -->
-
-
 <!-- Main Results -->
 <section class="section hero is-light" id="results">
   <div class="container is-max-desktop">
@@ -263,13 +293,191 @@
             <span class="stat-label">peak memory</span>
           </div>
         </div>
-        <figure class="paper-figure">
-          <img src="static/images/ablation_data.png" alt="OptiGeo ablation and quantitative results">
-        </figure>
-        <div class="content has-text-justified">
-          <p>
-            <b>Robustness with efficiency.</b> The ablations show that residual-trimmed real-label rehabilitation improves transparent-scene geometry and boundary quality, while targeted rendering supplies clean local optical supervision. At inference time OptiGeo deploys only the compact student, improving optical robustness without test-time refinement, multi-view fusion, or auxiliary transparent-object modules.
-          </p>
+        <div class="ablation-grid">
+          <section class="ablation-module">
+            <h3>Numerical Ablations</h3>
+            <p>
+              Controlled ablations are trained on two subsets, ARKitScenes and Hypersim, using 8 NVIDIA H20 GPUs. Residual-trimmed real-label rehabilitation consistently improves transparent-scene accuracy, generalization, and boundary sharpness.
+            </p>
+
+            <div class="ablation-table-block">
+              <h4>ClearGrasp Real</h4>
+              <table class="ablation-table">
+                <thead>
+                  <tr>
+                    <th>Variant</th>
+                    <th>AbsRel ↓</th>
+                    <th>RMSE ↓</th>
+                    <th>MAE ↓</th>
+                    <th>δ<sub>1</sub> ↑</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Base</td>
+                    <td>0.0274</td>
+                    <td>28.93</td>
+                    <td>18.95</td>
+                    <td>99.0</td>
+                  </tr>
+                  <tr>
+                    <td>+ Refine</td>
+                    <td>0.0253</td>
+                    <td>24.71</td>
+                    <td>16.92</td>
+                    <td>99.6</td>
+                  </tr>
+                  <tr>
+                    <td>+ Trim + Refine</td>
+                    <td><b>0.0224</b></td>
+                    <td><b>22.79</b></td>
+                    <td><b>15.41</b></td>
+                    <td><b>99.7</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ablation-table-block">
+              <h4>Sensitivity to Trimming Ratio τ</h4>
+              <table class="ablation-table">
+                <thead>
+                  <tr>
+                    <th>τ</th>
+                    <th>AbsRel ↓</th>
+                    <th>SiLog ↓</th>
+                    <th>RMSE ↓</th>
+                    <th>MAE ↓</th>
+                    <th>δ<sub>1</sub> ↑</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0</td>
+                    <td>0.0253</td>
+                    <td>3.5815</td>
+                    <td>24.71</td>
+                    <td>16.92</td>
+                    <td>99.6</td>
+                  </tr>
+                  <tr>
+                    <td>0.05</td>
+                    <td>0.0251</td>
+                    <td>3.5248</td>
+                    <td>24.63</td>
+                    <td>16.89</td>
+                    <td>99.7</td>
+                  </tr>
+                  <tr>
+                    <td>0.10</td>
+                    <td><b>0.0224</b></td>
+                    <td><b>3.1799</b></td>
+                    <td><b>22.79</b></td>
+                    <td><b>15.41</b></td>
+                    <td><b>99.7</b></td>
+                  </tr>
+                  <tr>
+                    <td>0.15</td>
+                    <td>0.0272</td>
+                    <td>3.7743</td>
+                    <td>27.23</td>
+                    <td>18.68</td>
+                    <td>99.6</td>
+                  </tr>
+                  <tr>
+                    <td>0.20</td>
+                    <td>0.0254</td>
+                    <td>3.4832</td>
+                    <td>25.55</td>
+                    <td>17.70</td>
+                    <td>99.7</td>
+                  </tr>
+                  <tr>
+                    <td>0.30</td>
+                    <td>0.0251</td>
+                    <td>3.5165</td>
+                    <td>25.14</td>
+                    <td>17.04</td>
+                    <td>99.7</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ablation-table-block">
+              <h4>Generalization Mean</h4>
+              <table class="ablation-table">
+                <thead>
+                  <tr>
+                    <th>Variant</th>
+                    <th>AbsRel ↓</th>
+                    <th>δ<sub>1</sub> ↑</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Base</td>
+                    <td>8.031</td>
+                    <td>91.71</td>
+                  </tr>
+                  <tr>
+                    <td>+ Refine</td>
+                    <td>7.951</td>
+                    <td>91.76</td>
+                  </tr>
+                  <tr>
+                    <td>+ Trim + Refine</td>
+                    <td><b>7.939</b></td>
+                    <td><b>91.80</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ablation-table-block">
+              <h4>Boundary F1</h4>
+              <table class="ablation-table">
+                <thead>
+                  <tr>
+                    <th>Variant</th>
+                    <th>iBims-1</th>
+                    <th>HAMMER</th>
+                    <th>Mean</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Base</td>
+                    <td>12.07</td>
+                    <td>2.39</td>
+                    <td>7.23</td>
+                  </tr>
+                  <tr>
+                    <td>+ Refine</td>
+                    <td>13.77</td>
+                    <td>2.98</td>
+                    <td>8.37</td>
+                  </tr>
+                  <tr>
+                    <td>+ Trim + Refine</td>
+                    <td><b>14.33</b></td>
+                    <td><b>3.93</b></td>
+                    <td><b>9.13</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="ablation-module">
+            <h3>Target Rendering Ablation</h3>
+            <p>
+              Targeted rendering supplies clean local optical geometry, recovering more complete transparent objects and sharper point-map structures.
+            </p>
+            <figure class="ablation-figure">
+              <img src="static/images/ablation_data.png" alt="Target rendering ablation comparing results with and without targeted rendering">
+            </figure>
+          </section>
         </div>
       </div>
     </div>
